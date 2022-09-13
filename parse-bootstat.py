@@ -29,19 +29,18 @@ def format_time(b):
 
 header_size = 0x800
 f.seek(header_size)
+
+# Get some info
 version, = struct.unpack('I', f.read(4))
-print('Version:', version)
-
 boot_log_start, = struct.unpack('I', f.read(4))
-print('BootLogStart: 0x%04x' % boot_log_start)
-
 boot_log_size, = struct.unpack('I', f.read(4))
-print('BootLogSize: 0x%04x' % boot_log_size)
-
 next_boot_log_entry, = struct.unpack('I', f.read(4))
-print('NextBootLogEntry: 0x%04x' % next_boot_log_entry)
-
 first_boot_log_entry, = struct.unpack('I', f.read(4))
+
+print('Version:', version)
+print('BootLogStart: 0x%04x' % boot_log_start)
+print('BootLogSize: 0x%04x' % boot_log_size)
+print('NextBootLogEntry: 0x%04x' % next_boot_log_entry)
 print('FirstBootLogEntry: 0x%04x' % first_boot_log_entry)
 
 overlap = True
@@ -88,20 +87,15 @@ while(True):
 
     # Unpack some more data
     entry_size, = struct.unpack('I', f.read(4))
-    print('EntrySize: %s' % entry_size)
-    current_pos += 4
-
     level, = struct.unpack('I', f.read(4))
-    print('Level: %s' % eventLevels[level])
-    current_pos += 4
-
     app_type, = struct.unpack('I', f.read(4))
-    print('ApplicationType: %s' % applicationTypes[app_type])
-    current_pos += 4
-
     event_code, = struct.unpack('I', f.read(4))
+    current_pos += 16
+
     print('EventCode: %s' % eventCodes[event_code])
-    current_pos += 4
+    print('Level: %s' % eventLevels[level])
+    print('ApplicationType: %s' % applicationTypes[app_type])
+    print('EntrySize: %s' % entry_size)
 
     # Look for a boot entry id and time
     if (app_type == 3) and (event_code == 1):
