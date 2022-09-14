@@ -2,8 +2,17 @@
 
 import struct # Struct is our friend
 import uuid   # Format the GUID
+from os import SEEK_END
 
 f = open('C:\\Windows\\bootstat.dat', 'rb')
+
+# Make sure the file is a supported length
+header_size = 0x800
+f.seek(0, SEEK_END)
+print(f.tell())
+if f.tell() != (0x10000 + header_size):
+    print('Unsupported file size.')
+    exit()
 
 eventLevels = { 0:'BSD_EVENT_LEVEL_SUCCESS',
                 1:'BSD_EVENT_LEVEL_INFORMATION',
@@ -27,10 +36,8 @@ applicationTypes = {1:'BCD_APPLICATION_TYPE_FIRMWARE_BOOT_MANAGER',
 def format_time(b):
     return '%s-%02d-%02d %02d:%02d:%02d' % (b[1]*256+b[0], b[2], b[4], b[6], b[8], b[10])
 
-header_size = 0x800
-f.seek(header_size)
-
 # Get some info
+f.seek(header_size)
 version, = struct.unpack('I', f.read(4))
 boot_log_start, = struct.unpack('I', f.read(4))
 boot_log_size, = struct.unpack('I', f.read(4))
