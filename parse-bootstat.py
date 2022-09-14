@@ -9,7 +9,6 @@ f = open('C:\\Windows\\bootstat.dat', 'rb')
 # Make sure the file is a supported length
 header_size = 0x800
 f.seek(0, SEEK_END)
-print(f.tell())
 if f.tell() != (0x10000 + header_size):
     print('Unsupported file size.')
     exit()
