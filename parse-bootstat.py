@@ -37,11 +37,11 @@ def format_time(b):
 
 # Get some info
 f.seek(header_size)
-version, = struct.unpack('I', f.read(4))
-boot_log_start, = struct.unpack('I', f.read(4))
-boot_log_size, = struct.unpack('I', f.read(4))
-next_boot_log_entry, = struct.unpack('I', f.read(4))
-first_boot_log_entry, = struct.unpack('I', f.read(4))
+version, = struct.unpack('<L', f.read(4))
+boot_log_start, = struct.unpack('<L', f.read(4))
+boot_log_size, = struct.unpack('<L', f.read(4))
+next_boot_log_entry, = struct.unpack('<L', f.read(4))
+first_boot_log_entry, = struct.unpack('<L', f.read(4))
 
 print('Version:', version)
 print('BootLogStart: 0x%04x' % boot_log_start)
@@ -92,10 +92,10 @@ while(True):
     current_pos += 16
 
     # Unpack some more data
-    entry_size, = struct.unpack('I', f.read(4))
-    level, = struct.unpack('I', f.read(4))
-    app_type, = struct.unpack('I', f.read(4))
-    event_code, = struct.unpack('I', f.read(4))
+    entry_size, = struct.unpack('<L', f.read(4))
+    level, = struct.unpack('<L', f.read(4))
+    app_type, = struct.unpack('<L', f.read(4))
+    event_code, = struct.unpack('<L', f.read(4))
     current_pos += 16
 
     print('EventCode: %s' % eventCodes[event_code])
