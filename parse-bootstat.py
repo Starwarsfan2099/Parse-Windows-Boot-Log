@@ -38,6 +38,11 @@ def format_time(b):
 # Get some info
 f.seek(header_size)
 version, = struct.unpack('<L', f.read(4))
+
+if version != 4:
+    print('Unsupported version.')
+    exit()
+    
 boot_log_start, = struct.unpack('<L', f.read(4))
 boot_log_size, = struct.unpack('<L', f.read(4))
 next_boot_log_entry, = struct.unpack('<L', f.read(4))
